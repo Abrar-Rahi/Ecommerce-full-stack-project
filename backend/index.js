@@ -1,11 +1,17 @@
+require('dotenv').config()
 const express = require('express')
+const cors = require('cors')
+const mongoConfig = require("./databaseConfig/mongoConfig")
+const port = process.env.PORT
 const app = express()
+const route = require("./routes")
+
+mongoConfig()
+app.use(cors())
+app.use(express.json())
+app.use(route)
 
 
-app.get('/', (req, res) => {
-  res.send('backend')
-})
-
-app.listen(3000, () => {
-  console.log(`Example app listening on port 3000`)
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`)
 })
