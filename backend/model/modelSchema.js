@@ -7,6 +7,10 @@ const modelSchema = new Schema({
     email : String,
     password : String,
     otp : String,
+    isEmailVarified : {
+        type : Boolean,
+        default : false
+    },
     role : {
         type : String,
         enum : ["user","merchant","admin"],
