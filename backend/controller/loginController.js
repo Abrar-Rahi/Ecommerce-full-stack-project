@@ -11,7 +11,13 @@ const loginController = async (req, res) => {
     if (existingUser) {
         bcrypt.compare(password, existingUser.password, function (err, result) {
             if (result) {
-                res.send("Login successfull")
+                res.send({
+                    id : existingUser._id,
+                    username : existingUser.username,
+                    email : existingUser.email,
+                    role : existingUser.role,
+                    isEmailVarified : existingUser.isEmailVarified,
+                })
             } else {
                 res.send("credinytial unmatched")
             }

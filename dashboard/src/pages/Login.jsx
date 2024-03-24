@@ -2,15 +2,18 @@ import React from 'react'
 import axios from 'axios';
 import { Button, Form, Input } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { activeUser } from '../slices/userSlice';
 
 const Login = () => {
 
   let navigate = useNavigate()
-
+  let dispatch = useDispatch()
     const onFinish = async (values) => {
+       try {
         let data = await axios.post("http://localhost:3000/api/v1/auth/login",{
-          email: values.email,
-          password : values.password
+          email: "rahiabrar177@gmail.com",
+          password : "1@Aaaaaaaaaa"
         },
         {
           headers :{
@@ -19,7 +22,20 @@ const Login = () => {
         }
         )
         console.log(data);
-        navigate("/home")
+
+        if(data.data.isEmailVarified == false){
+          console.log("please verify your email");
+        }else if(data.data.role == "user"){
+          console.log("You Have not permission to Login");
+        }else{
+          dispatch(activeUser(data.data))
+          localStorage.setItem("user", JSON.stringify(data.data))
+          navigate("/dashboard")
+        }
+
+       } catch (error) {
+        console.log(error);
+       }
       };
       const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
@@ -48,12 +64,12 @@ const Login = () => {
     <Form.Item
       label="email"
       name="email"
-      rules={[
-        {
-          required: true,
-          message: 'Please input your username!',
-        },
-      ]}
+      // rules={[
+      //   {
+      //     required: true,
+      //     message: 'Please input your username!',
+      //   },
+      // ]}
     >
       <Input />
     </Form.Item>
@@ -61,12 +77,12 @@ const Login = () => {
     <Form.Item
       label="Password"
       name="password"
-      rules={[
-        {
-          required: true,
-          message: 'Please input your password!',
-        },
-      ]}
+      // rules={[
+      //   {
+      //     required: true,
+      //     message: 'Please input your password!',
+      //   },
+      // ]}
     >
       <Input.Password />
     </Form.Item>

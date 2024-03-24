@@ -87,6 +87,7 @@ const Registration = () => {
             Submit
           </Button><br /> <br />
           <Link to="/forgotPassword">Forgot password</Link>
+          <Link className='login' to="/login">Login?</Link>
         </Form.Item>
       </Form>
     </div>
