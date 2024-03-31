@@ -15,6 +15,7 @@ import CreateSubCat from "./pages/CreateSubCat";
 import ViewCatrgory from "./pages/ViewCatrgory";
 import ViewSubCat from "./pages/ViewSubCat";
 import AddProduct from "./pages/AddProduct";
+import ViewProduct from "./pages/ViewProduce";
 
 function App() {
 
@@ -33,6 +34,7 @@ function App() {
             <Route path="viewCategory" element={<ViewCatrgory />}></Route>
             <Route path="viewSubCategory" element={<ViewSubCat />}></Route>
             <Route path="addProduct" element={<AddProduct />}></Route>
+            <Route path="viewProduct" element={<ViewProduct />}></Route>
         </Route>
 
       </Route>

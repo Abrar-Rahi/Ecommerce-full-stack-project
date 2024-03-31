@@ -32,7 +32,7 @@ const Homepage = () => {
     },
     getItem('PRODUCTS', 'sub2', <AppstoreOutlined />, [
       getItem('Add Products', '/dashboard/addProduct'),
-      getItem('View Products', '6'),
+      getItem('View Products', '/dashboard/viewProduct'),
     ]),
     {
       type: 'divider',

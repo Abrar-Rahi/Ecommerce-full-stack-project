@@ -13,6 +13,16 @@ const productSchima = new Schema({
    },
    image: {
     type : String
+   },
+   slug: {
+    type : String
+   },
+   productPrice: {
+      type : String,
+      require : true,
+   },
+   sellPrice: {
+      type : String,
    }
 })
 
