@@ -16,6 +16,8 @@ import ViewCatrgory from "./pages/ViewCatrgory";
 import ViewSubCat from "./pages/ViewSubCat";
 import AddProduct from "./pages/AddProduct";
 import ViewProduct from "./pages/ViewProduce";
+import AddVarient from "./pages/AddVarient";
+import ViewVarient from "./pages/ViewVarient";
 
 function App() {
 
@@ -35,6 +37,8 @@ function App() {
             <Route path="viewSubCategory" element={<ViewSubCat />}></Route>
             <Route path="addProduct" element={<AddProduct />}></Route>
             <Route path="viewProduct" element={<ViewProduct />}></Route>
+            <Route path="addVarient" element={<AddVarient />}></Route>
+            <Route path="viewVarient" element={<ViewVarient />}></Route>
         </Route>
 
       </Route>

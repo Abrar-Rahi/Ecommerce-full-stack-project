@@ -82,7 +82,7 @@ const CreateSubCat = () => {
 
         <Select
           showSearch
-          placeholder="Select a person"
+          placeholder="Select a Category"
           optionFilterProp="children"
           onChange={onChange}
           onSearch={onSearch}
