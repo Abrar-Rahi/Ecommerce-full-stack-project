@@ -8,7 +8,7 @@ const Registration = () => {
   let navigate = useNavigate()
 
     const onFinish = async (values) => {
-        let data = await axios.post("http://localhost:3000/api/v1/auth/registration",{
+        let data = await axios.post("http://localhost:8000/api/v1/auth/registration",{
           username : values.username,
           email: values.email,
           password : values.password

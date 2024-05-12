@@ -26,7 +26,7 @@ const ViewCatrgory = () => {
       let [catData,setCatData] = useState([])
       useEffect(() => {
           async function allcat(){
-            let allcatdata = await axios.get("http://localhost:3000/api/v1/product/allcat")
+            let allcatdata = await axios.get("http://localhost:8000/api/v1/product/allcat")
             
             let arr=[]
             allcatdata.data.map(item =>{

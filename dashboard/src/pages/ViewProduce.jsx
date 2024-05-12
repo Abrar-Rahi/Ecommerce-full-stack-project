@@ -9,7 +9,7 @@ const ViewProduce = () => {
 
     useEffect(() => {
         async function allproduct() {
-            let allproductdata = await axios.get("http://localhost:3000/api/v1/product/allproduct")
+            let allproductdata = await axios.get("http://localhost:8000/api/v1/product/allproduct")
 
             let arr = []
             allproductdata.data.map(item => {
@@ -46,7 +46,7 @@ const ViewProduce = () => {
             dataIndex: 'image',
             key: 'image',
             render: (_, record) => (    //underScore er value = array item.value
-                <img style={{ width: "70px" }} src={`http://localhost:3000${_}`} alt="fg" />
+                <img style={{ width: "70px" }} src={`http://localhost:8000${_}`} alt="fg" />
             )
 
         },

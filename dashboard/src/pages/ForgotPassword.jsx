@@ -5,7 +5,7 @@ import { Button, Checkbox, Form, Input } from 'antd';
 const ForgotPassword = () => {
     const onFinish = async (values) => {
 
-        let data = await axios.post("http://localhost:3000/api/v1/auth/forgotpass",{
+        let data = await axios.post("http://localhost:8000/api/v1/auth/forgotpass",{
           
           email: values.email,
         }

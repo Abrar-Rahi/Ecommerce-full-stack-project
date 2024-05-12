@@ -8,7 +8,7 @@ const CreateCat = () => {
     console.log(userInfo.id);
     const onFinish = async (values) => {
 
-        let data = await axios.post("http://localhost:3000/api/v1/product/category",{
+        let data = await axios.post("http://localhost:8000/api/v1/product/category",{
           
           categoryName: values.categoryName,
           ownerId : userInfo.id 

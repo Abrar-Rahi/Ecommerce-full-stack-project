@@ -13,7 +13,7 @@ const AddProduct = () => {
 
   const onFinish = async (values) => {
     console.log('Success:', values);
-    let data = await axios.post("http://localhost:3000/api/v1/product/createProduct", {
+    let data = await axios.post("http://localhost:8000/api/v1/product/createProduct", {
       productName: values.productName,
       description: description,
       avatar: image,

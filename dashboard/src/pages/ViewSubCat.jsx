@@ -26,7 +26,7 @@ const ViewSubCat = () => {
       let [subCatData,setSubCatData] = useState([])
       useEffect(() => {
           async function allcat(){
-            let allsubcatdata = await axios.get("http://localhost:3000/api/v1/product/allsubcat")
+            let allsubcatdata = await axios.get("http://localhost:8000/api/v1/product/allsubcat")
             
             let arr=[]
             allsubcatdata.data.map(item =>{

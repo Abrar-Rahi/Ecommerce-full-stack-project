@@ -10,7 +10,7 @@ const OtpValidation = () => {
 
   useEffect(() => {
     async function linkVarify(){
-      let data = await axios.post("http://localhost:3000/api/v1/auth/otpVarification",{
+      let data = await axios.post("http://localhost:8000/api/v1/auth/otpVarification",{
         email : param.email,
         otp: param.otp
       }
@@ -23,7 +23,7 @@ const OtpValidation = () => {
   },[])
   
     // const onFinish = async (values) => {
-    //   let data = await axios.post("http://localhost:3000/api/v1/auth/otpVarification",{
+    //   let data = await axios.post("http://localhost:8000/api/v1/auth/otpVarification",{
     //     email : param.email,
     //     otp: values.otp
     //   }

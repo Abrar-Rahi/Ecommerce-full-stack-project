@@ -12,6 +12,12 @@ const catSchima = new Schema({
     type : mongoose.Schema.Types.ObjectId,
     ref : "User"
    },
+   subCatList :[
+      {
+         type : mongoose.Schema.Types.ObjectId,
+         ref : "SubCategory"
+      }
+   ],
    status : {
     type : String,
     enum : ["pending", "rejected", "approved"],

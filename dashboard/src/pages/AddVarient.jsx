@@ -10,7 +10,7 @@ const AddVarient = () => {
 
     const onFinish = async (values) => {
         console.log('Success:', values);
-        let data = await axios.post("http://localhost:3000/api/v1/product/addVarient", {
+        let data = await axios.post("http://localhost:8000/api/v1/product/addVarient", {
             varientName: values.varientName,
             avatar: image,
             regularPrice: values.regularPrice,
@@ -46,7 +46,7 @@ const AddVarient = () => {
 
         useEffect(() => {
             async function allpro(){
-              let allprodata = await axios.get("http://localhost:3000/api/v1/product/allproduct")
+              let allprodata = await axios.get("http://localhost:8000/api/v1/product/allproduct")
               
               let arr=[]
               allprodata.data.map(item =>{

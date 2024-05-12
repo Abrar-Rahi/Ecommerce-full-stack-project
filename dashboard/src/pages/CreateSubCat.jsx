@@ -13,7 +13,7 @@ const CreateSubCat = () => {
   
   const onFinish = async (values) => {
 
-    let data = await axios.post("http://localhost:3000/api/v1/product/subcategory", {
+    let data = await axios.post("http://localhost:8000/api/v1/product/subcategory", {
 
       subCategoryName: values.subCategoryName,
       ownerId: userInfo.id,
@@ -22,6 +22,9 @@ const CreateSubCat = () => {
     )
     console.log(data)
   };
+
+ 
+
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
@@ -39,7 +42,7 @@ const CreateSubCat = () => {
 
     useEffect(() => {
       async function allcat(){
-        let allcatdata = await axios.get("http://localhost:3000/api/v1/product/allcat")
+        let allcatdata = await axios.get("http://localhost:8000/api/v1/product/allcat")
         
         let arr=[]
         allcatdata.data.map(item =>{

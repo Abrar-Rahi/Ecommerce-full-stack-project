@@ -1,0 +1,24 @@
+.subCategory{
+    background: rgb(114, 114, 223);
+    padding: 5px 10px;
+    border-radius: 15px;
+    transition: 0.3s;
+    display: none;
+    margin-left: 70px;
+    position: absolute;
+    top: -10px;
+}
+
+.categoryUL{
+  margin-bottom: 40px;
+  display: flex;
+  position: relative;
+}
+
+
+.categoryLi:hover .subCategory{
+    display: block;
+    transition: 0.3s;
+    
+    
+}

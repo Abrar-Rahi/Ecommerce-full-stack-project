@@ -1,3 +1,4 @@
+const categorySchema = require("../model/categorySchema")
 const SubCategorySchema = require("../model/subCategorySchema")
 
 const subCategorayController = async (req,res)=>{
@@ -14,6 +15,9 @@ if(existingSubCategory){
         catId : catId
     })
     subCategory.save()
+
+    await categorySchema.findOneAndUpdate({_id :catId} , { $push: { subCatList: subCategory._id } } )
+
     res.send({success : "Sub Category Created. Wait for Admin Confirmation"})
 }
 
