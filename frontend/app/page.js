@@ -1,12 +1,19 @@
+import ProCard from "@/components/proCard";
+import Slider from "@/components/slider";
 
-import Category from "@/components/category";
+
 import Product from "@/components/product";
+
+
+
 
 export default function Home() {
   return (
    <>
-    <Category/>
-    <Product/>
+    <Slider/>
+    
+   <Product/>
+    
     </>
   );
 }

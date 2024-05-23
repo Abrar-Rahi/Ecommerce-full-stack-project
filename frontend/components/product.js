@@ -1,5 +1,9 @@
 import Image from 'next/image'
 import React from 'react'
+import ProCard from './proCard'
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 async function getData() {
     const res = await fetch('http://localhost:8000/api/v1/product/allproduct')
@@ -20,25 +24,18 @@ const Product = async () => {
         <div>
             <h1>product</h1>
 
-            {data.map(item => (
-                <>
-                    <p>{item.productName}</p>
-                    <Image
-                        src={`http://localhost:8000${item.image}`}
-                        alt="Picture of the author"
-                        width={200}
-                        height={200}
 
-                    />
-                    <p>
-                        <del>{item.productPrice}</del>
-                        {item.sellPrice && 
-                        <span>{item.sellPrice}</span>
-                        }
-                    </p>
-                </>
+            <Container>
+                <Row className=''>
+                    {data.map(item => (
+                        <Col xs lg="3" style={{ marginBottom: "20px" }}>
+                            <ProCard item={item} />
+                        </Col>
+                    ))}
+                </Row>
+            </Container>
 
-            ))}
+
 
         </div>
     )
