@@ -12,7 +12,7 @@ const productSchima = new Schema({
     type : String
    },
    image: {
-    type : String
+    type : [String]
    },
    slug: {
     type : String

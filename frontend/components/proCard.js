@@ -8,6 +8,7 @@ import { useState, useRef } from 'react';
 import Button from 'react-bootstrap/Button';
 import Overlay from 'react-bootstrap/Overlay';
 import Tooltip from 'react-bootstrap/Tooltip';
+import Link from 'next/link';
 
 const ProCard = ({ item }) => {
 
@@ -15,7 +16,7 @@ const ProCard = ({ item }) => {
   const target = useRef(null);
 
   let handleCart = (item) => {
-    console.log(item)
+    
     fetch("http://localhost:8000/api/v1/product/addToCart", {
       method: "post",
       headers: {
@@ -36,12 +37,16 @@ const ProCard = ({ item }) => {
   }
 
   return (
-    <Card style={{ width: '18rem', }}>
-      <Card.Img variant="top" src={`http://localhost:8000${item.image}`} />
+    <Card style={{ width: '18rem',height: '32rem' }}>
+      <Card.Img variant="top" src={`http://localhost:8000${item.image[0]}`} />
+      {console.log(item.image[0])}
       <Card.Body >
-        <Card.Title>{item.productName}</Card.Title>
+        <Card.Title style={{ hight:"5rem" }}>
+          <Link href={`/productDetails/${item.slug}`}>{item.productName}</Link>
+          </Card.Title>
 
-        {item.sellPrice ?
+       <div style={{ marginTop:'2rem' }}>
+       {item.sellPrice ?
           <p>
             <del style={{ color: "red", marginRight: "10px" }}><span>{item.productPrice}</span></del>
             <span>{item.sellPrice}</span>
@@ -64,6 +69,7 @@ const ProCard = ({ item }) => {
             )}
           </Overlay>
         </>
+       </div>
       </Card.Body>
     </Card>
   )

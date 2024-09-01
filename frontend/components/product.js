@@ -22,7 +22,9 @@ const Product = async () => {
 
     return (
         <div>
-            <h1>product</h1>
+            <Container>
+                <h1 className='my-5'>product</h1>
+            </Container>
 
 
             <Container>
@@ -30,6 +32,7 @@ const Product = async () => {
                     {data.map(item => (
                         <Col xs lg="3" style={{ marginBottom: "20px" }}>
                             <ProCard item={item} />
+
                         </Col>
                     ))}
                 </Row>

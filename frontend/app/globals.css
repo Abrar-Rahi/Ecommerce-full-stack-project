@@ -40,3 +40,11 @@
 
 
 }
+
+.slick-arrow{
+    visibility: hidden;
+}
+.slick-slide{
+    outline: white;
+}
+

@@ -8,19 +8,27 @@ import slugify from 'react-slugify';
 const AddProduct = () => {
 
   let [description, setDescription] = useState('')
-  let [image, setImage] = useState({})
+  let [image, setImage] = useState([])
   let [slugText, setSlugText] = useState("")
 
   const onFinish = async (values) => {
-    console.log('Success:', values);
-    let data = await axios.post("http://localhost:8000/api/v1/product/createProduct", {
-      productName: values.productName,
-      description: description,
-      avatar: image,
-      slug : slugText,
-      productPrice : values.productPrice,
-      sellPrice : values.sellPrice
-    },
+    console.log('Success:', values,image);
+
+    const formData = new FormData()
+
+    formData.append('productName',values.productName)
+    formData.append('description',description)
+    formData.append('slug',slugText)
+    formData.append('productPrice',values.productPrice)
+    formData.append('sellPrice',values.sellPrice)
+
+    image.forEach(file =>{
+      formData.append('photos', file)
+    })
+
+    let data = await axios.post("http://localhost:8000/api/v1/product/createProduct", 
+      formData
+    ,
       {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -34,7 +42,7 @@ const AddProduct = () => {
   };
 
   let handleChange = (e) => {
-    setImage(e.target.files[0]);
+    setImage([...e.target.files]);
   }
 
   let handleSlugify = (e) => {
@@ -126,7 +134,7 @@ const AddProduct = () => {
           name="sellPrice"
           rules={[
             {
-              required: true,
+              
               message: 'Please input your Sell Price!',
             },
           ]}
@@ -145,7 +153,7 @@ const AddProduct = () => {
             },
           ]}
         >
-          <Input onChange={handleChange} type="file" />
+          <Input onChange={handleChange} type="file" multiple/>
         </Form.Item>
 
         <Form.Item

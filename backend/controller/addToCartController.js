@@ -9,11 +9,11 @@ const addToCartController = async (req,res)=>{
 
 if(existintCartProduct.length > 0 ){
    
-    if(req.query.type == "increse"){
+    if(req.query.type == "increase"){
 
         let data = await CartSchema.findOneAndUpdate({_id : existintCartProduct[0]._id}, {quantity : existintCartProduct[0].quantity+1}, {new:true})
         return res.send(data)
-    }else if(req.query.type == "decrese"){
+    }else if(req.query.type == "decrease"){
 
         let data = await CartSchema.findOneAndUpdate({_id : existintCartProduct[0]._id}, {quantity : existintCartProduct[0].quantity-1}, {new:true})
         return res.send(data)

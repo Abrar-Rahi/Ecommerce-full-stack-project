@@ -17,39 +17,35 @@ const Category = async () => {
 
   const data = await getData()
   return (
- <div className='categoryDiv1'>
+    <div className='categoryDiv1'>
+      <Container>
+        <div className='categoryDiv'>
+          {data.map(item => (
+            <ul className='categoryUL'>
 
- 
-    <Container>
-
-    
-    <div className='categoryDiv'>
-
-
-      {data.map(item =>(
-           <ul className='categoryUL'>
-
-            <li key={item._id} className='categoryLi'>
+              <li key={item._id} className='categoryLi'>
                 <Link style={{ textDecoration: "none", color: "black" }} href={`/category/${item._id}`}>{item.categoryName}</Link>
 
-            <div className='subCategory'>
-              {item.subCatList.length > 0 && item.subCatList.map(Sitem=>(
+                <div className='subCategory'>
+                  {item.subCatList.length > 0 && item.subCatList.map(Sitem => (
 
-              <p>{Sitem.subCategoryName}</p>
-              ))}
-              
-            </div>   
-             
-                
-            </li>
-           </ul>
-        ))}
+                    <p>{Sitem.subCategoryName}</p>
+                  ))}
+                </div>
+              </li>
+            </ul>
+          ))}
 
 
-    </div>
-    </Container>
+        </div>
+      </Container>
     </div>
   )
 }
 
 export default Category
+
+
+
+
+

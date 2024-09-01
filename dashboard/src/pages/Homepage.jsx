@@ -39,7 +39,7 @@ const Homepage = () => {
     {
       type: 'divider',
     },
-    getItem('CATEGOTY & SUB CATEGORY', 'sub4', <SettingOutlined />, [
+    getItem('CATEGOTY & SUB CATEGORY', 'sub4', <AppstoreOutlined />, [
       getItem('Add Category', '/dashboard/createCategory'),
       getItem('Add Subcategory', '/dashboard/createSubCategory'),
       getItem('View Category', '/dashboard/viewCategory'),
@@ -49,9 +49,15 @@ const Homepage = () => {
     {
       type: 'divider',
     },
-    getItem('DISCOUNT', 'sub5', <SettingOutlined />, [
-      getItem('Add Discount', '11'),
+    getItem('DISCOUNT', 'sub5', <AppstoreOutlined />, [
+      getItem('Add Discount', '/dashboard/addDiscount'),
       getItem('View Discount', '12'),
+    ]),
+    {
+      type: 'divider',
+    },
+    getItem('APPLIATE', 'sub6', <AppstoreOutlined />, [
+      getItem('Affiliate Product', '/dashboard/affiliate'),
     ]),
   ];
   return (

@@ -1,90 +1,250 @@
+'use client';
 
 import Image from 'next/image';
-import React from 'react'
-import { Container } from 'react-bootstrap';
-import Table from 'react-bootstrap/Table';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import CartIncre from '@/components/cartIncre';
+import React, { useEffect, useState } from 'react';
+import { Container, Table, Row, Col, Card } from 'react-bootstrap';
 
-async function getData() {
+const Cart = () => {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const res = await fetch(`http://localhost:8000/api/v1/product/cartItem`)
+  useEffect(() => {
+    async function getData() {
+      try {
+        const res = await fetch(`http://localhost:8000/api/v1/product/cartItem`);
+        if (!res.ok) {
+          throw new Error('Failed to fetch data');
+        }
+        const result = await res.json();
+        setData(result);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+    getData();
+  }, []);
 
 
-  if (!res.ok) {
-    throw new Error('Failed to fetch data')
-  }
+  const handleIncreDecre = async (id, type) => {
 
-  return res.json()
-}
+    let updateData = data.map(item =>
+      item.productId._id === id ?
+        { ...item, quantity: item.quantity + (type === "increase" ? 1 : -1) }
+        :
+        item
+    )
 
-const Cart = async () => {
-  const data = await getData()
+    setData(updateData)
 
-  let totolPrice = 0;
 
-  data.map(item =>{
-    totolPrice += item.productId.sellPrice ? item.productId.sellPrice * item.quantity : item.productId.productPrice * item.quantity
-  })
+    try {
+      const response = await fetch(`http://localhost:8000/api/v1/product/addToCart?type=${type}`, {
+        method: "POST",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          productId: id,
+        })
+      });
 
- 
+      if (!response.ok) {
+        throw new Error(`Failed to update cart: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log('Cart updated successfully:', data);
+
+    } catch (error) {
+      console.error('Error:', error.message);
+    }
+  };
+
+
+  let totalPrice = 0;
+
+  data.forEach(item => {
+    totalPrice += (item.productId.sellPrice || item.productId.productPrice) * item.quantity;
+  });
+
+  const tax = Math.round(totalPrice * 0.15);
+  const deliveryCharge = (totalPrice > 1000 ? 0 : 10)
+
+  const subTotal = Math.round(totalPrice + tax + deliveryCharge);
+
   return (
-    <Container>
-{data.length == 0 ?
- <h1>cart is empty</h1>
-:
-<>
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>image</th>
-            <th>Name</th>
-            <th>Quantity</th>
-            <th>price</th>
-            <th>Total</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map(item => (
+    <Container style={{ marginTop: '100px', marginBottom: '100px' }}>
+      <div>
+        {loading && (<h1 style={{ color: '#ff9800', fontSize: '2rem', textAlign: 'center', padding: '20px', animation: 'pulse 1.5s infinite' }}>Loading...</h1>
+        )}
 
-            <tr>
-              <td> <Image width={50} height={50} alt='proImg' src={`http://localhost:8000${item.productId.image}`} /></td>
-              <td>{item.productId.productName}</td>
-              <td>
-                
-                <CartIncre productId={item.productId._id} type={"increse"}/>
-                {item.quantity}
-                <CartIncre productId={item.productId._id} type={"decrese"}/>
-                
+        {error && (<h1 style={{ color: '#f44336', fontSize: '2rem', textAlign: 'center', padding: '20px', backgroundColor: '#ffeeee', borderRadius: '10px', }}>Error: {error}</h1>
+        )}
+        <style>
+          {`
+          @keyframes pulse {
+            0% {
+              opacity: 1;
+            }
+            50% {
+              opacity: 0.5;
+            }
+            100% {
+              opacity: 1;
+            }
+          }
+        `}
+        </style>
+      </div>
 
+      {data.length === 0 ? (
+         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+         <h1
+           style={{
+             color: '#f44336',              
+             fontSize: '2.5rem',            
+             fontWeight: 'bold',            
+             textAlign: 'center',           
+             padding: '20px',               
+             backgroundColor: '#fff3f3',    
+             borderRadius: '10px',          
+             boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', 
+             maxWidth: '80%',               
+             margin: '0 auto',             
+           }}
+         >
+           Cart is empty
+         </h1>
+       </div>
+      ) : (
+        <>
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.map(item => (
+                <tr key={item.productId._id}>
+                  <td>
+                    <Image
+                      width={50}
+                      height={50}
+                      alt="Product Image"
+                      src={`http://localhost:8000${item.productId.image[0]}`}
+                      style={{ objectFit: 'cover' }}
+                    />
+                  </td>
+                  <td>{item.productId.productName}</td>
+                  <td>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <button
+                        onClick={() => handleIncreDecre(item.productId._id, 'decrease')}
+                        disabled={item.quantity === 1}
+                        style={{
+                          backgroundColor: item.quantity === 1 ? '#ccc' : '#f45f90',
+                          color: '#fff',
+                          border: 'none',
+                          borderRadius: '50%',
+                          width: '30px',
+                          height: '30px',
+                          cursor: item.quantity === 1 ? 'not-allowed' : 'pointer',
+                          fontSize: '20px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          transition: 'background-color 0.3s ease',
+                        }}
+                      >
+                        -
+                      </button>
+                      <span style={{ padding: '0 15px', fontSize: '16px' }}>{item.quantity}</span>
+                      <button
+                        onClick={() => handleIncreDecre(item.productId._id, 'increase')}
+                        style={{
+                          backgroundColor: '#4CAF90',
+                          color: '#fff',
+                          border: 'none',
+                          borderRadius: '50%',
+                          width: '30px',
+                          height: '30px',
+                          cursor: 'pointer',
+                          fontSize: '20px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          transition: 'background-color 0.3s ease',
+                        }}
+                      >
+                        +
+                      </button>
+                    </div>
+                    {/* <button onClick={()=>handleIncreDecre(item.productId._id,"increase")}>+</button>
+                  <span style={{paddingLeft:'5px', paddingRight:'5px'}}>{item.quantity}</span>
+                  {item.quantity == 1 ? 
+                  
+                  <button style={{cursor:'not-allowed'}} disabled>-</button>
+                  :
+                  <button onClick={()=>handleIncreDecre(item.productId._id,"decrease")}>-</button>
+                  } */}
+                  </td>
+                  <td>{item.productId.sellPrice || item.productId.productPrice}$</td>
+                  <td>
+                    {(item.productId.sellPrice || item.productId.productPrice) * item.quantity}$
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
 
-              </td>
-              <td>{item.productId.sellPrice ? item.productId.sellPrice : item.productId.productPrice}</td>
-              <td>{item.productId.sellPrice ? item.productId.sellPrice * item.quantity : item.productId.productPrice * item.quantity}</td>
-            </tr>
-
-          ))}
-
-        </tbody>
-      </Table>
-
-      <Row>
-        <Col></Col>
-        <Col>
-          <p>Total Price = {totolPrice}$</p>
-          <p>Tax(15%) ={Math.round(totolPrice*(15/100))} $ </p>
-          <p>Delivary Charge = 10$</p>
-          <p>SubTotal = {Math.round(totolPrice+(totolPrice*15/100)+10)}$</p>
+          <Row className="justify-content-center">
+            <Col md={6}>
+              <Card style={{ marginTop: '20px', border: 'none', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
+                <Card.Body>
+                  <Card.Title style={{ textAlign: 'center', fontWeight: 'bold', fontSize: '1.5rem', marginBottom: '20px' }}>Order Summary</Card.Title>
+                  <hr />
+                  <Row style={{ marginBottom: '10px' }}>
+                    <Col>Total Price:</Col>
+                    <Col style={{ textAlign: 'right' }}>{totalPrice}$</Col>
+                  </Row>
+                  <Row style={{ marginBottom: '10px' }}>
+                    <Col>Tax (15%):</Col>
+                    <Col style={{ textAlign: 'right' }}>{tax}$</Col>
+                  </Row>
+                  <Row style={{ marginBottom: '10px' }}>
+                    <Col>Delivery Charge:</Col>
+                    <Col style={{ textAlign: 'right' }}>{deliveryCharge}$</Col>
+                  </Row>
+                  <hr />
+                  <Row style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>
+                    <Col>SubTotal:</Col>
+                    <Col style={{ textAlign: 'right' }}>{subTotal}$</Col>
+                  </Row>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
           
-        </Col>
-      </Row>
-      </>
-}
 
-
+          {/* <Row >
+            <Col>
+              <ApplyCupon />
+            </Col>
+            <Col></Col>
+          </Row> */}
+        </>
+      )}
     </Container>
-  )
-}
+  );
+};
 
-export default Cart
+export default Cart;
