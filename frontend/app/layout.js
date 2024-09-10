@@ -1,11 +1,14 @@
 import { Inter } from "next/font/google";
+import { Crimson_Text } from 'next/font/google'
 import "./globals.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container } from "react-bootstrap";
 import MainNavbar from "@/components/mainNavbar";
 import Category from "@/components/category";
+import Footer from "@/components/footer";
 
 const inter = Inter({ subsets: ["latin"] });
+const Crimson = Crimson_Text({ subsets: ["latin"] ,weight: ['400','600','700'],});
 
 export const metadata = {
   title: "Create Next App",
@@ -15,16 +18,14 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={Crimson.className}>
 
         <MainNavbar/>
         <Category/>
 
         {children}
 
-        <Container>
-          <h1>footer</h1>
-        </Container>
+       <Footer/>
 
       </body>
     </html>

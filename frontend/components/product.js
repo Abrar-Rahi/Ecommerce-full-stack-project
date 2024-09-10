@@ -21,14 +21,18 @@ const Product = async () => {
     const data = await getData()
 
     return (
-        <div>
+        <div style={{backgroundColor: '#f5f5f5', paddingTop:'50px',paddingBottom:'50px'}}>
             <Container>
-                <h1 className='my-5'>product</h1>
+                <div style={{paddingBottom:'10px', textAlign:'center'}}>
+                <h1 style={{fontSize:'40px',fontWeight:"700"}}>Featured Products</h1>
+                <p style={{fontSize:'20px',fontWeight:"600"}}>Check & Get Your Desired Product!</p>
+
+                </div>
             </Container>
 
 
             <Container>
-                <Row className=''>
+                <Row>
                     {data.map(item => (
                         <Col xs lg="3" style={{ marginBottom: "20px" }}>
                             <ProCard item={item} />

@@ -14,6 +14,7 @@ const createCuponController = require("../../controller/createCuponController")
 const allCupon = require("../../controller/allCupon")
 const matchCuponController = require("../../controller/matchCuponController")
 const productDetails = require("../../controller/productDetailsController")
+const paymentController = require("../../controller/paymentController")
 const route = express.Router()
 
 const storage = multer.diskStorage({
@@ -36,6 +37,7 @@ route.post("/addVarient", upload.single('avatar'),addVarientController)
 route.post("/addToCart", addToCartController)
 route.post("/createCupon", createCuponController)
 route.post("/matchCupon", matchCuponController)
+route.post("/payment", paymentController)
 
 
 

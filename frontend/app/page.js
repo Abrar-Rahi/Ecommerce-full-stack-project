@@ -4,29 +4,34 @@ import Slider from "@/components/slider";
 
 import Product from "@/components/product";
 import ServiceOptions from '../components/serviceOptions';
-import StackyCartIcon from "@/svgIcon/stackyCartIcon";
-import Link from "next/link";
+
+import CartIFixedIcon from "@/components/cartIFixedIcon";
+import Notice from "@/components/notice";
+import FeaturedCategory from "@/components/featuredCategory";
 
 
 
 
 export default function Home() {
   return (
-   <>
-    <Slider/>
+    <>
+      <Slider />
 
-    <div>
-      <main style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '300px', backgroundColor: '#f5f5f5' }}>
-        <ServiceOptions />
-      </main>
+      <div>
+        <main style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '300px', backgroundColor: '#f5f5f5' }}>
+          <ServiceOptions />
+        </main>
+      </div>
+      <div>
+        <Notice />
+      </div>
+      <FeaturedCategory />
 
-    </div>
-    <Link href='/cart' style={{ position:'fixed', bottom:'30px', right:'200px' }}>
-      <StackyCartIcon width={48} height={48} color="#007bff" />
-    </Link>
+      <CartIFixedIcon />
 
-   <Product/>
-    
+
+      <Product />
+
     </>
   );
 }

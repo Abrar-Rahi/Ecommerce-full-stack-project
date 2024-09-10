@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { Container, Table, Row, Col, Card } from 'react-bootstrap';
 
@@ -75,6 +76,11 @@ const Cart = () => {
   const deliveryCharge = (totalPrice > 1000 ? 0 : 10)
 
   const subTotal = Math.round(totalPrice + tax + deliveryCharge);
+  
+  localStorage.setItem("cartlength",JSON.stringify(data.length))
+
+  localStorage.setItem("totalPrice",JSON.stringify(subTotal))
+  
 
   return (
     <Container style={{ marginTop: '100px', marginBottom: '100px' }}>
@@ -102,24 +108,24 @@ const Cart = () => {
       </div>
 
       {data.length === 0 ? (
-         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-         <h1
-           style={{
-             color: '#f44336',              
-             fontSize: '2.5rem',            
-             fontWeight: 'bold',            
-             textAlign: 'center',           
-             padding: '20px',               
-             backgroundColor: '#fff3f3',    
-             borderRadius: '10px',          
-             boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', 
-             maxWidth: '80%',               
-             margin: '0 auto',             
-           }}
-         >
-           Cart is empty
-         </h1>
-       </div>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+          <h1
+            style={{
+              color: '#f44336',
+              fontSize: '2.5rem',
+              fontWeight: 'bold',
+              textAlign: 'center',
+              padding: '20px',
+              backgroundColor: '#fff3f3',
+              borderRadius: '10px',
+              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+              maxWidth: '80%',
+              margin: '0 auto',
+            }}
+          >
+            Cart is empty
+          </h1>
+        </div>
       ) : (
         <>
           <Table striped bordered hover>
@@ -128,13 +134,14 @@ const Cart = () => {
                 <th>Image</th>
                 <th>Name</th>
                 <th>Quantity</th>
-                <th>Price</th>
+                <th>Unit Price</th>
                 <th>Total</th>
               </tr>
             </thead>
             <tbody>
               {data.map(item => (
                 <tr key={item.productId._id}>
+                  
                   <td>
                     <Image
                       width={50}
@@ -188,18 +195,11 @@ const Cart = () => {
                         +
                       </button>
                     </div>
-                    {/* <button onClick={()=>handleIncreDecre(item.productId._id,"increase")}>+</button>
-                  <span style={{paddingLeft:'5px', paddingRight:'5px'}}>{item.quantity}</span>
-                  {item.quantity == 1 ? 
-                  
-                  <button style={{cursor:'not-allowed'}} disabled>-</button>
-                  :
-                  <button onClick={()=>handleIncreDecre(item.productId._id,"decrease")}>-</button>
-                  } */}
+
                   </td>
-                  <td>{item.productId.sellPrice || item.productId.productPrice}$</td>
+                  <td>{item.productId.sellPrice || item.productId.productPrice}৳</td>
                   <td>
-                    {(item.productId.sellPrice || item.productId.productPrice) * item.quantity}$
+                    {(item.productId.sellPrice || item.productId.productPrice) * (item.quantity)}৳
                   </td>
                 </tr>
               ))}
@@ -214,26 +214,55 @@ const Cart = () => {
                   <hr />
                   <Row style={{ marginBottom: '10px' }}>
                     <Col>Total Price:</Col>
-                    <Col style={{ textAlign: 'right' }}>{totalPrice}$</Col>
+                    <Col style={{ textAlign: 'right' }}>{totalPrice}৳</Col>
                   </Row>
                   <Row style={{ marginBottom: '10px' }}>
                     <Col>Tax (15%):</Col>
-                    <Col style={{ textAlign: 'right' }}>{tax}$</Col>
+                    <Col style={{ textAlign: 'right' }}>{tax}৳</Col>
                   </Row>
                   <Row style={{ marginBottom: '10px' }}>
                     <Col>Delivery Charge:</Col>
-                    <Col style={{ textAlign: 'right' }}>{deliveryCharge}$</Col>
+                    <Col style={{ textAlign: 'right' }}>{deliveryCharge}৳</Col>
                   </Row>
                   <hr />
                   <Row style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>
                     <Col>SubTotal:</Col>
-                    <Col style={{ textAlign: 'right' }}>{subTotal}$</Col>
+                    <Col style={{ textAlign: 'right' }}>{subTotal}৳</Col>
                   </Row>
                 </Card.Body>
               </Card>
             </Col>
           </Row>
-          
+
+          <Row className="justify-content-center" style={{ marginTop: '20px' }}>
+            <Col md={6} style={{ textAlign: 'center' }}>
+              <Link
+                href={'/checkout'}
+                style={{
+                  textDecoration:'none',
+                  backgroundColor: '#4CAF50', // Green background
+                  color: 'white',             // White text
+                  border: 'none',             // Remove border
+                  padding: '10px 20px',       // Padding for the button
+                  fontSize: '16px',   
+                  fontWeight:'600',        // Font size
+                  borderRadius: '5px',        // Rounded corners
+                  cursor: 'pointer',          // Pointer cursor on hover
+                  transition: 'background-color 0.3s ease', // Smooth transition on hover
+                }}
+                onClick={() => {
+                  // Add your checkout logic here
+                  console.log('Proceeding to checkout...');
+                }}
+                onMouseEnter={(e) => e.target.style.backgroundColor = '#45a049'} // Darken button on hover
+                onMouseLeave={(e) => e.target.style.backgroundColor = '#4CAF50'} // Revert to original color when not hovered
+              >
+                Proceed to Checkout
+              </Link>
+            </Col>
+          </Row>
+
+
 
           {/* <Row >
             <Col>
