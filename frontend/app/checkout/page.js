@@ -1,12 +1,17 @@
 'use client'
+
 import React, { useEffect, useState } from 'react'
 import { Container, Form, Button, Row, Table, Col, Card } from 'react-bootstrap';
 
 
 
-const Checkout = () => {
+const Checkout = ({ searchParams }) => {
 
   const [data, setData] = useState([]);
+  const [productData, setProductData] = useState([]);
+  const [error, setError] = useState(null);
+  const userId = searchParams.userid;
+  const slug = searchParams.slug;
 
   useEffect(() => {
     async function getData() {
@@ -16,13 +21,48 @@ const Checkout = () => {
           throw new Error('Failed to fetch data');
         }
         const result = await res.json();
+
         setData(result);
+
+        if (result.length > 0) {
+          setFormData((prevFormData) => ({
+            ...prevFormData,
+            wonerId: result[0].cartOwnerId,
+            cartId: result[0]._id,
+          }));
+        }
       } catch (error) {
         setError(error.message);
       }
     }
     getData();
   }, []);
+
+  useEffect(() => {
+    async function getProdData() {
+      try {
+        const res = await fetch(`http://localhost:8000/api/v1/product/allproduct`);
+        if (!res.ok) {
+          throw new Error('Failed to fetch data');
+        }
+        const result = await res.json();
+        let arr = []
+        result.map(item => {
+          if (item.slug === slug) {
+
+            arr.push(item)
+          }
+        })
+        setProductData(arr)
+
+      } catch (error) {
+        setError(error.message);
+      }
+    }
+    getProdData();
+  }, []);
+
+
 
 
   const [formData, setFormData] = useState({
@@ -33,13 +73,21 @@ const Checkout = () => {
     cus_city: '',
     cus_postcode: '',
     cus_country: 'Bangladesh',
-    amount: `${localStorage.getItem("totalPrice")}`,
-    // paymentMethod: '',
-    // cardNumber: '',
+    amount: '',
+    wonerId: '',
+    cartId: '',
+    userId: userId,
+    slug: slug
+
   });
 
+  useEffect(() => {
+    const storedTotalPrice = localStorage.getItem("totalPrice");
+    setFormData(prev => ({ ...prev, amount: storedTotalPrice }));
+  }, []);
+
   const handleChange = (e) => {
-    
+
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -47,8 +95,8 @@ const Checkout = () => {
   };
 
   const handleSubmit = async () => {
-    
-    
+
+
     try {
       const response = await fetch(`http://localhost:8000/api/v1/product/payment`, {
         method: "POST",
@@ -57,12 +105,12 @@ const Checkout = () => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(
-           formData
+          formData
         )
       });
 
       let url = await response.json()
-      
+
       window.location.href = url.payment_url
 
       if (!response.ok) {
@@ -72,26 +120,38 @@ const Checkout = () => {
     } catch (error) {
       console.error('Error:', error.message);
     }
-    
+
 
   };
 
   let totalPrice = 0;
+if(productData.length){
+  
+  productData.forEach(item => {
+    console.log(item);
+    totalPrice += (item.sellPrice || item.productPrice) * 1
+  });
+}else{
 
   data.forEach(item => {
     totalPrice += (item.productId.sellPrice || item.productId.productPrice) * item.quantity;
   });
+}
 
   const tax = Math.round(totalPrice * 0.15);
-  const deliveryCharge = (totalPrice > 1000 ? 0 : 10)
+  const deliveryCharge = (totalPrice > 10000 ? 0 : 100)
 
   const subTotal = Math.round(totalPrice + tax + deliveryCharge);
 
+  useEffect(() => {
+    setFormData(prev => ({ ...prev, amount: subTotal }));
+  }, [subTotal]);
+
   return (
-    <div style={{backgroundColor: '#f5f5f5' }}>
-      <Container style={{ paddingTop: '50px', paddingBottom: '50px'}}>
+    <div style={{ backgroundColor: '#f5f5f5' }}>
+      <Container style={{ paddingTop: '50px', paddingBottom: '50px' }}>
         <Row>
-          <Col md={4} style={{backgroundColor: '#fff',borderRadius:'15px', padding:'20px', marginRight: '15px' }}>
+          <Col md={4} style={{ backgroundColor: '#fff', borderRadius: '15px', padding: '20px', marginRight: '15px' }}>
             <h2 style={{ marginBottom: '30px' }}>Checkout Form</h2>
             <Form >
               <Row>
@@ -202,15 +262,15 @@ const Checkout = () => {
                 />
               </Form.Group>
 
-              
+
             </Form>
           </Col>
 
-          <Col md={7} style={{backgroundColor: '#fff',borderRadius:'15px', padding:'20px', marginLeft: '15px' }}>
+          <Col md={7} style={{ backgroundColor: '#fff', borderRadius: '15px', padding: '20px', marginLeft: '15px' }}>
             <div style={{ padding: '20px' }}>
               <Row>
                 <Col>
-                  <h5 style={{ color: '#ff4d4f', display: 'inline-block', marginRight: '10px' }}>{data.length}</h5>
+                  <h5 style={{ color: '#ff4d4f', display: 'inline-block', marginRight: '10px' }}>{ productData.length ? productData.length :  data.length}</h5>
                   <h4 style={{ display: 'inline-block', fontWeight: 'bold' }}>Order Overview</h4>
                 </Col>
               </Row>
@@ -223,15 +283,29 @@ const Checkout = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {data.map((item, index) => (
-                    <tr key={index}>
-                      <td>
-                        {item.productId.productName}
-                      </td>
-                      <td>{item.productId.sellPrice || item.productId.productPrice}৳ × {item.quantity}</td>
-                      <td>{(item.productId.sellPrice || item.productId.productPrice) * (item.quantity)}৳</td>
-                    </tr>
-                  ))}
+                  {productData.length ?
+                    productData.map((item, index) => (
+                      <tr key={index}>
+                        <td>
+                          {item.productName}
+                        </td>
+                        <td>{item.sellPrice || item.productPrice}৳ × 1</td>
+                        <td>{(item.sellPrice || item.productPrice)}৳</td>
+                      </tr>
+                    ))
+                    :
+                    data.map((item, index) => (
+                      <tr key={index}>
+                        <td>
+                          {item.productId.productName}
+                        </td>
+                        <td>{item.productId.sellPrice || item.productId.productPrice}৳ × {item.quantity}</td>
+                        <td>{(item.productId.sellPrice || item.productId.productPrice) * (item.quantity)}৳</td>
+                      </tr>
+                    ))
+                  }
+                  { }
+                  { }
                 </tbody>
               </Table>
 
@@ -256,8 +330,8 @@ const Checkout = () => {
               </Row>
             </div>
 
-            <div style={{textAlign:'end'}}>
-            <Button onClick={handleSubmit} variant="primary" type="button" style={{ marginTop: '20px' }}>
+            <div style={{ textAlign: 'end' }}>
+              <Button onClick={handleSubmit} variant="primary" type="button" style={{ marginTop: '20px' }}>
                 Confirm Oredr
 
               </Button>

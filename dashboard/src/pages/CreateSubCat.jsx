@@ -1,147 +1,292 @@
-import React, { useEffect, useState } from 'react'
-import { Button, Select, Form, Input } from 'antd';
-import { useSelector } from 'react-redux';
-import axios from 'axios';
-import FormItem from 'antd/es/form/FormItem';
+// import React, { useEffect, useState } from 'react'
+// import { Button, Select, Form, Input } from 'antd';
+// import { useSelector } from 'react-redux';
+// import axios from 'axios';
+// import FormItem from 'antd/es/form/FormItem';
 
-const CreateSubCat = () => {
+// const CreateSubCat = () => {
 
-  let [catData,setCatData] = useState([])
-  let [catId,setCatId] = useState("")
+//   let [catData,setCatData] = useState([])
+//   let [catId,setCatId] = useState("")
 
-  let userInfo = useSelector(state => state.currentUser.value)
+//   let userInfo = useSelector(state => state.currentUser.value)
   
-  const onFinish = async (values) => {
+//   const onFinish = async (values) => {
 
-    let data = await axios.post("http://localhost:8000/api/v1/product/subcategory", {
+//     let data = await axios.post("http://localhost:8000/api/v1/product/subcategory", {
 
-      subCategoryName: values.subCategoryName,
-      ownerId: userInfo.id,
-      catId: catId
-    }
-    )
-    console.log(data)
-  };
+//       subCategoryName: values.subCategoryName,
+//       ownerId: userInfo.id,
+//       catId: catId
+//     }
+//     )
+//     console.log(data)
+//   };
 
  
+
+//   const onFinishFailed = (errorInfo) => {
+//     console.log('Failed:', errorInfo);
+//   };
+
+//   // select item
+//   const onChange = (value) => {
+//     setCatId(value)
+//   };
+//   const onSearch = (value) => {
+//   };
+
+//   // Filter `option.label` match the user type `input`
+//   const filterOption = (input, option) =>
+//     (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
+
+//     useEffect(() => {
+//       async function allcat(){
+//         let allcatdata = await axios.get("http://localhost:8000/api/v1/product/allcat")
+        
+//         let arr=[]
+//         allcatdata.data.map(item =>{
+//           arr.push(
+//             {
+//               value: item._id ,
+//               label: item.categoryName,
+//             }
+//           )
+//         })
+//         setCatData(arr)
+//       }
+    
+//       allcat()
+//     }, [])
+    
+
+//   return (
+//     <div>
+//      <Form name="basic"
+//         labelCol={{
+//           span: 8,
+//         }}
+//         wrapperCol={{
+//           span: 16,
+//         }}
+//         style={{
+//           maxWidth: 600,
+//         }}
+//         initialValues={{
+//           remember: true,
+//         }}>
+//           <Form.Item  label="First Select a Category"
+//           name="SelectCategory"
+//           rules={[
+//             {
+//               required: true,
+//             },
+//           ]}>
+
+//         <Select
+//           showSearch
+//           placeholder="Select a Category"
+//           optionFilterProp="children"
+//           onChange={onChange}
+//           onSearch={onSearch}
+//           filterOption={filterOption}
+//           options={catData}
+//         />
+//           </Form.Item>
+     
+//      </Form>
+     
+
+
+//       <Form
+//         name="basic"
+//         labelCol={{
+//           span: 8,
+//         }}
+//         wrapperCol={{
+//           span: 16,
+//         }}
+//         style={{
+//           maxWidth: 600,
+//         }}
+//         initialValues={{
+//           remember: true,
+//         }}
+//         onFinish={onFinish}
+//         onFinishFailed={onFinishFailed}
+//         autoComplete="off"
+//       >
+//         <Form.Item
+//           label="sub Category name"
+//           name="subCategoryName"
+//           rules={[
+//             {
+//               required: true,
+//               message: 'Please input your Subcategory Name!',
+//             },
+//           ]}
+//         >
+//           <Input />
+//         </Form.Item>
+
+//         <Form.Item
+//           wrapperCol={{
+//             offset: 8,
+//             span: 16,
+//           }}
+//         >
+//           <Button type="primary" htmlType="submit">
+//             Submit
+//           </Button>
+//         </Form.Item>
+//       </Form>
+//     </div>
+//   )
+// }
+
+// export default CreateSubCat
+
+
+import React, { useEffect, useState } from 'react';
+import { Button, Select, Form, Input, Typography } from 'antd';
+import { useSelector } from 'react-redux';
+import axios from 'axios';
+
+const { Title } = Typography;
+
+const CreateSubCat = () => {
+  let [catData, setCatData] = useState([]);
+  let [catId, setCatId] = useState('');
+  let userInfo = useSelector((state) => state.currentUser.value);
+
+  const onFinish = async (values) => {
+    try {
+      let data = await axios.post('http://localhost:8000/api/v1/product/subcategory', {
+        subCategoryName: values.subCategoryName,
+        ownerId: userInfo.id,
+        catId: catId,
+      });
+      console.log(data);
+    } catch (error) {
+      console.error('Error creating subcategory:', error);
+    }
+  };
 
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
 
-  // select item
   const onChange = (value) => {
-    setCatId(value)
-  };
-  const onSearch = (value) => {
+    setCatId(value);
   };
 
-  // Filter `option.label` match the user type `input`
+  const onSearch = (value) => {};
+
   const filterOption = (input, option) =>
     (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
 
-    useEffect(() => {
-      async function allcat(){
-        let allcatdata = await axios.get("http://localhost:8000/api/v1/product/allcat")
-        
-        let arr=[]
-        allcatdata.data.map(item =>{
-          arr.push(
-            {
-              value: item._id ,
-              label: item.categoryName,
-            }
-          )
-        })
-        setCatData(arr)
+  useEffect(() => {
+    async function allcat() {
+      try {
+        let allcatdata = await axios.get('http://localhost:8000/api/v1/product/allcat');
+        let arr = [];
+        allcatdata.data.map((item) => {
+          arr.push({
+            value: item._id,
+            label: item.categoryName,
+          });
+        });
+        setCatData(arr);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
       }
-    
-      allcat()
-    }, [])
-    
+    }
+
+    allcat();
+  }, []);
 
   return (
-    <div>
-     <Form name="basic"
-        labelCol={{
-          span: 8,
-        }}
-        wrapperCol={{
-          span: 16,
-        }}
-        style={{
-          maxWidth: 600,
-        }}
-        initialValues={{
-          remember: true,
-        }}>
-          <Form.Item  label="First Select a Category"
-          name="SelectCategory"
-          rules={[
-            {
-              required: true,
-            },
-          ]}>
-
-        <Select
-          showSearch
-          placeholder="Select a Category"
-          optionFilterProp="children"
-          onChange={onChange}
-          onSearch={onSearch}
-          filterOption={filterOption}
-          options={catData}
-        />
+    <div style={styles.container}>
+      <div style={styles.formWrapper}>
+        <Title level={2} style={styles.title}>Create New Subcategory</Title>
+        <Form
+          name="categorySelection"
+          labelCol={{ span: 8 }}
+          wrapperCol={{ span: 16 }}
+          style={styles.form}
+          initialValues={{ remember: true }}
+        >
+          <Form.Item
+            label="Select a Category"
+            name="SelectCategory"
+            rules={[{ required: true, message: 'Please select a category!' }]}
+          >
+            <Select
+              showSearch
+              placeholder="Select a Category"
+              optionFilterProp="children"
+              onChange={onChange}
+              onSearch={onSearch}
+              filterOption={filterOption}
+              options={catData}
+            />
           </Form.Item>
-     
-     </Form>
-     
+        </Form>
 
-
-      <Form
-        name="basic"
-        labelCol={{
-          span: 8,
-        }}
-        wrapperCol={{
-          span: 16,
-        }}
-        style={{
-          maxWidth: 600,
-        }}
-        initialValues={{
-          remember: true,
-        }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        autoComplete="off"
-      >
-        <Form.Item
-          label="sub Category name"
-          name="subCategoryName"
-          rules={[
-            {
-              required: true,
-              message: 'Please input your Subcategory Name!',
-            },
-          ]}
+        <Form
+          name="basic"
+          labelCol={{ span: 8 }}
+          wrapperCol={{ span: 16 }}
+          style={styles.form}
+          initialValues={{ remember: true }}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          autoComplete="off"
         >
-          <Input />
-        </Form.Item>
+          <Form.Item
+            label="Subcategory Name"
+            name="subCategoryName"
+            rules={[{ required: true, message: 'Please input the subcategory name!' }]}
+          >
+            <Input placeholder="Enter subcategory name" />
+          </Form.Item>
 
-        <Form.Item
-          wrapperCol={{
-            offset: 8,
-            span: 16,
-          }}
-        >
-          <Button type="primary" htmlType="submit">
-            Submit
-          </Button>
-        </Form.Item>
-      </Form>
+          <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+            <Button type="primary" htmlType="submit" style={styles.submitButton}>
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default CreateSubCat
+const styles = {
+  container: {
+    height: '100vh',
+    backgroundColor: '#f0f2f5',
+  },
+  formWrapper: {
+    width: '600px', // Fixed width for the form
+    backgroundColor: '#fff',
+    padding: '20px',
+    borderRadius: '8px',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+  },
+  title: {
+    textAlign: 'center',
+    marginBottom: '30px',
+    color: '#1e3c72',
+  },
+  form: {
+    width: '100%',
+  },
+  submitButton: {
+    width: '100%',
+    backgroundColor: '#1890ff',
+    borderColor: '#1890ff',
+  },
+};
+
+export default CreateSubCat;

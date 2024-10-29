@@ -32,6 +32,14 @@ const FeaturedCategory = () => {
             { icon: FaTv },
         ]);
     }, []);
+
+    let arr = []
+    data.map(item =>{
+        if(item.status === "approved"){
+            arr.push(item)
+        }
+    })
+
     return (
         <div style={{ backgroundColor: '#f5f5f5' }}>
 
@@ -41,7 +49,8 @@ const FeaturedCategory = () => {
                 Get Your Desired Product from Featured Category!
             </p>
             <Row>
-                {data.map((item, index) => (
+                {arr.length > 0 ? 
+                arr.map((item, index) => (
                     <Col key={index} xs={6} sm={4} md={3} lg={2} className="text-center" style={{ marginBottom: '20px' }}>
                         <Link href={`/category/${item._id}`}>
 
@@ -67,7 +76,11 @@ const FeaturedCategory = () => {
                             </div>
                         </Link>
                     </Col>
-                ))}
+                ))
+                :
+                <h1 style={{ textAlign: 'center', color: '#808080', marginBottom: '30px' }}>There is no category here</h1>
+            }
+                
             </Row>
         </Container>
         </div>

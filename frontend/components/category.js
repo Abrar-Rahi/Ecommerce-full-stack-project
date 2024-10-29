@@ -66,6 +66,8 @@ const Category = () => {
           throw new Error('Failed to fetch data');
         }
         const result = await res.json();
+        console.log(result);
+        
         setData(result);
       } catch (error) {
         setError(error.message);
@@ -82,11 +84,20 @@ const Category = () => {
     setHoveredItem(null);
   };
 
+  let arr = []
+    data.map(item =>{
+        if(item.status === "approved"){
+            arr.push(item)
+        }
+    })
+
   return (
     <div style={{ backgroundColor: '#ffffff', padding: '10px 0', textAlign: 'center', borderBottom: '2px solid #e0e0e0' }}>
     <Container>
       <nav style={{ display: 'flex', justifyContent: 'center', gap: '5px' }}>
-        {data.map((item, index) => (
+        {arr.length > 0 ?
+         arr.map((item, index) => (
+          
           <div
             key={index}
             onMouseEnter={() => handleMouseEnter(index)}
@@ -140,7 +151,10 @@ const Category = () => {
               </div>
             )}
           </div>
-        ))}
+        ))
+      :
+      <p style={{ textAlign: 'center', color: '#808080' }}>There is no category here</p>
+      }
       </nav>
     </Container>
     </div>

@@ -240,15 +240,15 @@ const Cart = () => {
                 href={'/checkout'}
                 style={{
                   textDecoration:'none',
-                  backgroundColor: '#4CAF50', // Green background
-                  color: 'white',             // White text
-                  border: 'none',             // Remove border
-                  padding: '10px 20px',       // Padding for the button
+                  backgroundColor: '#4CAF50', 
+                  color: 'white',             
+                  border: 'none',            
+                  padding: '10px 20px',       
                   fontSize: '16px',   
-                  fontWeight:'600',        // Font size
-                  borderRadius: '5px',        // Rounded corners
-                  cursor: 'pointer',          // Pointer cursor on hover
-                  transition: 'background-color 0.3s ease', // Smooth transition on hover
+                  fontWeight:'600',        
+                  borderRadius: '5px',      
+                  cursor: 'pointer',        
+                  transition: 'background-color 0.3s ease', 
                 }}
                 onClick={() => {
                   // Add your checkout logic here

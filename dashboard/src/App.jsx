@@ -20,6 +20,7 @@ import AddVarient from "./pages/AddVarient";
 import ViewVarient from "./pages/ViewVarient";
 import AddDiscount from "./pages/AddDiscount";
 import Affiliate from "./pages/Affiliate";
+import ViewAffiliate from "./pages/ViewAffiliate";
 
 function App() {
 
@@ -43,6 +44,7 @@ function App() {
             <Route path="viewVarient" element={<ViewVarient />}></Route>
             <Route path="addDiscount" element={<AddDiscount />}></Route>
             <Route path="affiliate" element={<Affiliate />}></Route>
+            <Route path="affiliateBalance" element={<ViewAffiliate />}></Route>
         </Route>
 
       </Route>

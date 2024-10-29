@@ -66,7 +66,7 @@ const ProCard = ({ item }) => {
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', flexGrow: 1 }}>
           {/* Price */}
           <div style={{ margin: '5px', textAlign: 'center',fontWeight:'600',fontSize:'22px' }}>
-            {item.sellPrice ? (
+            {item.sellPrice  ? (
               <p>
                 <del style={{ color: "#353839", marginRight: "10px",fontSize:'16px' }}>
                   <span>{item.productPrice}৳</span>

@@ -15,6 +15,10 @@ const allCupon = require("../../controller/allCupon")
 const matchCuponController = require("../../controller/matchCuponController")
 const productDetails = require("../../controller/productDetailsController")
 const paymentController = require("../../controller/paymentController")
+const updateCategoryController = require("../../controller/updateCategoryController")
+const updateProductController = require("../../controller/updateProductController")
+const searchController = require("../../controller/searchController")
+const viewAffiliateController = require("../../controller/viewAffiliateController")
 const route = express.Router()
 
 const storage = multer.diskStorage({
@@ -31,8 +35,10 @@ const storage = multer.diskStorage({
   const upload = multer({ storage: storage })
 
 route.post("/category",categorayController)
+route.post("/updateCategory/:id",updateCategoryController)
 route.post("/subcategory",subCategorayController)
 route.post("/createProduct", upload.array('photos', 12),createProductController)
+route.post("/updateProduct/:id",updateProductController)
 route.post("/addVarient", upload.single('avatar'),addVarientController)
 route.post("/addToCart", addToCartController)
 route.post("/createCupon", createCuponController)
@@ -50,5 +56,7 @@ route.get("/subCatUnderCat", subCatUnderCat)
 route.get("/productDetails", productDetails)
 route.get("/cartItem", allCart)
 route.get("/allCupon", allCupon)
+route.get("/affiliate", viewAffiliateController)
+route.get("/search/:slug", searchController)
 
 module.exports = route

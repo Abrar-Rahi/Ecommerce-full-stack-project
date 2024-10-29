@@ -1,4 +1,6 @@
+'use client'
 import React from 'react'
+import { Card, Container, Row, Col } from 'react-bootstrap';
 
 async function getData(id) {
   
@@ -18,13 +20,34 @@ const Product = async ({params}) => {
 
   return (
     
-    data.map(item=>(
-      <ul>
-
-        <li key={item._id}>{item.subCategoryName}</li>
-      </ul>
-    ))
-    
+    <Container style={{ padding: '100px 0' }}>
+      <h1 style={{ textAlign: 'center', marginBottom: '40px', color: '#333' }}>
+        Product Categories
+      </h1>
+      <Row>
+        {data.map(item => (
+          <Col key={item._id} xs={12} md={4} lg={3} style={{ marginBottom: '20px' }}>
+            <Card
+              style={{
+                padding: '20px',
+                textAlign: 'center',
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                transition: 'transform 0.2s',
+                border: 'none',
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.transform = 'translateY(-5px)')}
+              onMouseLeave={(e) => (e.currentTarget.style.transform = 'translateY(0)')}
+            >
+              <Card.Body>
+                <Card.Title style={{ fontSize: '1.5rem', color: '#007bff' }}>
+                  {item.subCategoryName}
+                </Card.Title>
+              </Card.Body>
+            </Card>
+          </Col>
+        ))}
+      </Row>
+    </Container>
   )
 }
 

@@ -23,7 +23,12 @@ const productSchima = new Schema({
    },
    sellPrice: {
       type : String,
-   }
+   },
+   status : {
+      type : String,
+      enum : ["pending", "rejected", "approved"],
+      default : "pending"
+     }
 })
 
 module.exports = mongoose.model("Product" , productSchima)

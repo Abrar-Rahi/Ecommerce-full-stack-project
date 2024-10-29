@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product Invoice</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <table width="50%" cellpadding="0" cellspacing="0" style="font-family: Arial, sans-serif; font-size: 14px; color: #333; margin: 0 auto; text-align: center;">
+        <tr>
+            <td style="padding: 20px 0; text-align: center;">
+                <h2 style="margin: 0; color: #007BFF;">Invoice</h2>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 10px 20px;">
+                <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse; width: 100%; margin-bottom: 20px;">
+                    <tr>
+                        <td style="padding: 5px; border: 1px solid #ddd; background-color: #f9f9f9; font-weight: bold;">Invoice No:</td>
+                        <td style="padding: 5px; border: 1px solid #ddd;">${Math.floor(Math.random() * 10000)}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px; border: 1px solid #ddd; background-color: #f9f9f9; font-weight: bold;">Date:</td>
+                        <td style="padding: 5px; border: 1px solid #ddd;">${formattedDate}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px; border: 1px solid #ddd; background-color: #f9f9f9; font-weight: bold;">Bill To:</td>
+                        <td style="padding: 5px; border: 1px solid #ddd;">${cus_name}<br>${cus_add}<br>${cus_city}, ${cus_country}, ${cus_postcode}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px; border: 1px solid #ddd; background-color: #f9f9f9; font-weight: bold;">Ship To:</td>
+                        <td style="padding: 5px; border: 1px solid #ddd;">StarTech<br>5678 Oak Avenue<br>Dhanmondi, Dhaka, 1200</td>
+                    </tr>
+                </table>
+                <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+                    <thead>
+                        <tr>
+                            <th style="padding: 10px; border: 1px solid #ddd; background-color: #007BFF; color: white;">Product</th>
+                            <th style="padding: 10px; border: 1px solid #ddd; background-color: #007BFF; color: white;">Quantity</th>
+                            <th style="padding: 10px; border: 1px solid #ddd; background-color: #007BFF; color: white;">Unit Price</th>
+                            <th style="padding: 10px; border: 1px solid #ddd; background-color: #007BFF; color: white;">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                       ${productInfo()}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3" style="padding: 10px; border: 1px solid #ddd; text-align: right; font-weight: bold;">Subtotal</td>
+                            <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${amount}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 20px; text-align: center; font-size: 12px; color: #888;">
+                <p>Thank you for your business!</p>
+                <p>If you have any questions, please contact us at support@example.com</p>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

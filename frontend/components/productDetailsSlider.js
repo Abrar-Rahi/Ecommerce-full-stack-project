@@ -35,9 +35,10 @@ const ProductDetailsSlider = ({ images }) => {
 
                 <div className="slider-container">
                     <Slider asNavFor={nav2} ref={slider => (sliderRef1 = slider)} >
-                        {images.map(item => (
+                        {images.map((item,index) => (
                             <div style={{ marginBottom: '30px' }}>
                                 <Image
+                                    key={index}
                                     src={`http://localhost:8000${item}`}
                                     width={500}
                                     height={500}
