@@ -9,7 +9,7 @@
 //     const onFinish = async (values) => {
 
 //         let data = await axios.post("http://localhost:8000/api/v1/product/category",{
-          
+
 //           categoryName: values.categoryName,
 //           ownerId : userInfo.id 
 //         }
@@ -72,13 +72,14 @@
 
 
 import React from 'react';
-import { Button, Form, Input, Typography } from 'antd';
+import { Button, Form, Input, Typography,message } from 'antd';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 
 const { Title } = Typography;
 
 const CreateCat = () => {
+    const [form] = Form.useForm();
     let userInfo = useSelector((state) => state.currentUser.value);
 
     const onFinish = async (values) => {
@@ -88,8 +89,11 @@ const CreateCat = () => {
                 ownerId: userInfo.id,
             });
             console.log(data);
+            message.success("Product added successfully!");
+            form.resetFields();
         } catch (error) {
             console.error('Error creating category:', error);
+            message.error("Failed to add product. Please try again.");
         }
     };
 
@@ -102,6 +106,7 @@ const CreateCat = () => {
             <div style={styles.formWrapper}>
                 <Title level={2} style={styles.title}>Create New Category</Title>
                 <Form
+                    form={form}
                     name="basic"
                     labelCol={{ span: 8 }}
                     wrapperCol={{ span: 16 }}

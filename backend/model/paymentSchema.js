@@ -12,6 +12,10 @@ const paymentSchema = new Schema({
     type : String,
     require : true
    },
+    amount : {
+    type : String,
+    require : true
+   },
    cus_email : {
     type : String,
     require : true,

@@ -19,6 +19,10 @@ const updateCategoryController = require("../../controller/updateCategoryControl
 const updateProductController = require("../../controller/updateProductController")
 const searchController = require("../../controller/searchController")
 const viewAffiliateController = require("../../controller/viewAffiliateController")
+const allOrderListController = require("../../controller/allOrderListController")
+const updateSubCategoryController = require("../../controller/updateSubCategoryController")
+const deleteSubCategoryController = require("../../controller/deleteSubCategoryController")
+const deleteCategoryController = require("../../controller/deleteCategoryController")
 const route = express.Router()
 
 const storage = multer.diskStorage({
@@ -36,6 +40,9 @@ const storage = multer.diskStorage({
 
 route.post("/category",categorayController)
 route.post("/updateCategory/:id",updateCategoryController)
+route.post("/deleteCategory/:id",deleteCategoryController)
+route.post("/updateSubCategory/:id",updateSubCategoryController)
+route.post("/deleteSubCategory/:id",deleteSubCategoryController)
 route.post("/subcategory",subCategorayController)
 route.post("/createProduct", upload.array('photos', 12),createProductController)
 route.post("/updateProduct/:id",updateProductController)
@@ -58,5 +65,6 @@ route.get("/cartItem", allCart)
 route.get("/allCupon", allCupon)
 route.get("/affiliate", viewAffiliateController)
 route.get("/search/:slug", searchController)
+route.get("/orderList/:id", allOrderListController)
 
 module.exports = route

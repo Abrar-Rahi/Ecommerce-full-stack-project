@@ -5,13 +5,12 @@ const CuponSchema = require("../model/cuponSchema")
 const matchCuponController = async (req, res) => {
  
     let {ccupon} = req.body
-    existingCupon = await CuponSchema.find({cupon : ccupon})
+    existingCupon = await CuponSchema.findOne({cupon : ccupon})
 
     if(existingCupon){
-        return res.send(existingCupon[0])
+        return res.send(existingCupon)
     }else{
-        console.log("cupon not matched");
-        // return res.send(JSON.stringify("cupon not matched"))
+        return res.send(JSON.stringify("cupon not matched"))
     }
 
     

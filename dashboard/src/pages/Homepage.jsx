@@ -55,6 +55,10 @@ const Homepage = () => {
       getItem('Affiliate Product', '/dashboard/affiliate'),
       getItem('Affiliate Balance', '/dashboard/affiliateBalance'),
     ]),
+    { type: 'divider' },
+    getItem('Order History', 'sub6', <AppstoreOutlined />, [
+      getItem('Order List', '/dashboard/orderList'),
+    ]),
   ];
 
   return (

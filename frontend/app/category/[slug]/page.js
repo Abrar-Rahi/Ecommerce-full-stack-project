@@ -14,9 +14,18 @@ async function getData(id) {
   return res.json()
 }
 
+
+
 const Product = async ({params}) => {
 
   const data = await getData(params.slug)
+
+  let arr = []
+    data.map(item =>{
+        if(item.status === "approved"){
+            arr.push(item)
+        }
+    })
 
   return (
     
@@ -25,7 +34,7 @@ const Product = async ({params}) => {
         Product Categories
       </h1>
       <Row>
-        {data.map(item => (
+        {arr.length > 0 ? arr.map(item => (
           <Col key={item._id} xs={12} md={4} lg={3} style={{ marginBottom: '20px' }}>
             <Card
               style={{
@@ -45,7 +54,9 @@ const Product = async ({params}) => {
               </Card.Body>
             </Card>
           </Col>
-        ))}
+        ))
+      :
+      <p style={{ textAlign: 'center', color: '#808080' }}>There is no Subcategory here</p>}
       </Row>
     </Container>
   )

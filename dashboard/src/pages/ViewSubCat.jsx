@@ -56,11 +56,14 @@ import React, { useEffect, useState } from 'react';
 import { Space, Table, Typography, Button, Popconfirm, message } from 'antd';
 import axios from 'axios';
 import { DeleteOutlined } from '@ant-design/icons';
+import { CheckOutlined } from '@ant-design/icons';
+import { StopOutlined  } from '@ant-design/icons';
 
 const { Title } = Typography;
 
 const ViewSubCat = () => {
   const [subCatData, setSubCatData] = useState([]);
+  const [realTime, setRealTime] = useState(false);
 
   useEffect(() => {
     async function fetchSubCategories() {
@@ -69,6 +72,8 @@ const ViewSubCat = () => {
         let formattedData = response.data.map((item) => ({
           key: item._id,
           name: item.subCategoryName,
+          catName : item.catId.categoryName,
+          status : item.status
         }));
         setSubCatData(formattedData);
       } catch (error) {
@@ -76,11 +81,37 @@ const ViewSubCat = () => {
       }
     }
     fetchSubCategories();
-  }, []);
+  }, [realTime]);
 
-  const handleDelete = (key) => {
-    message.success('Subcategory deleted successfully');
-    // Implement your delete logic here
+  const handleDelete = async (key) => {
+    try {
+      let data = await axios.post(`http://localhost:8000/api/v1/product/deleteSubCategory/${key}`)
+
+      console.log(data);
+      setRealTime((prev)=>!prev)
+      
+      message.success("Sub Category Deleted");
+      
+    } catch (error) {
+      console.error('Error during handleDelete from viewSubcategory:', error);
+    }
+  };
+
+  const handleApprove = async (item) => {
+    const newStatus = item.status === 'pending' ? 'approved' : 'pending';
+    try {
+      let data = await axios.post(`http://localhost:8000/api/v1/product/updateSubCategory/${item.key}?status=${item.status}`)
+
+      console.log(data);
+      setRealTime((prev)=>!prev)
+      
+      message.success(`Subcategory ${newStatus === 'approved' ? 'approved' : 'pending'} successfully`);
+      
+    } catch (error) {
+      console.error('Error during handleApprove from viewSubcategory:', error);
+    }
+   
+  
   };
 
   const columns = [
@@ -88,6 +119,12 @@ const ViewSubCat = () => {
       title: 'Sub Category Name',
       dataIndex: 'name',
       key: 'name',
+      render: (text) => <a style={styles.subCategoryName}>{text}</a>,
+    },
+    {
+      title: 'Category Name',
+      dataIndex: 'catName',
+      key: 'catName',
       render: (text) => <a style={styles.subCategoryName}>{text}</a>,
     },
     {
@@ -110,6 +147,14 @@ const ViewSubCat = () => {
               Delete
             </Button>
           </Popconfirm>
+          <Button
+            type="primary"
+            style={styles.approvedButton}
+            icon={record.status === "pending"? <CheckOutlined />:<StopOutlined />}
+            onClick={() => handleApprove(record)}
+          >
+           {record.status === "pending" ? "Approved":"pending"} 
+          </Button>
         </Space>
       ),
     },
@@ -151,6 +196,14 @@ const styles = {
   deleteButton: {
     backgroundColor: '#ff4d4f',
     borderColor: '#ff4d4f',
+  },
+  approvedButton: {
+    backgroundColor: '#28a745', // Green background for approval
+    borderColor: '#28a745', // Same border color
+    color: '#fff', // White text
+    borderRadius: '4px', // Rounded corners
+    padding: '0 15px',
+    margin : '0 10px' // Bold text
   },
 };
 

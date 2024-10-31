@@ -137,6 +137,7 @@ import axios from 'axios';
 const { Title } = Typography;
 
 const AddDiscount = () => {
+  const [form] = Form.useForm(); 
   const [cuponType, setCuponType] = useState('');
 
   const onFinish = async (values) => {
@@ -149,6 +150,8 @@ const AddDiscount = () => {
       });
       message.success('Coupon created successfully!');
       console.log('cuponData', response.data);
+      form.resetFields(); 
+      setCuponType("")
     } catch (error) {
       message.error('Failed to create coupon!');
       console.error('Error:', error);
@@ -168,6 +171,7 @@ const AddDiscount = () => {
       <Card style={styles.card}>
         <Title level={3} style={styles.title}>Add Discount Coupon</Title>
         <Form
+          form={form}
           name="basic"
           layout="vertical"
           onFinish={onFinish}

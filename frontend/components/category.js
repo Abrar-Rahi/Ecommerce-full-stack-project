@@ -66,7 +66,6 @@ const Category = () => {
           throw new Error('Failed to fetch data');
         }
         const result = await res.json();
-        console.log(result);
         
         setData(result);
       } catch (error) {
@@ -132,6 +131,7 @@ const Category = () => {
                 }}
               >
                 {item.subCatList.map((subItem, subIndex) => (
+                  subItem.status === "approved" &&
                   <Row style={{  }} key={subIndex} >
                   <Col md={6} style={{  }}>
                     <p style={{
@@ -140,7 +140,7 @@ const Category = () => {
                       whiteSpace: 'nowrap',
                       fontWeight: '400'
                     }}>
-                      {subItem.subCategoryName}
+                      { subItem.subCategoryName}
                     </p>
                   </Col>
                   <Col md={1}>

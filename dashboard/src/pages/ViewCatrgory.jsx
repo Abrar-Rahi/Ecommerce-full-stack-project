@@ -31,28 +31,34 @@ const ViewCategory = () => {
   }, [realTime]);
 
   
-  const handleDelete = (key) => {
-    message.success('Category deleted successfully');
-    // Implement your delete logic here
+  const handleDelete = async (key) => {
+    try {
+      let data = await axios.post(`http://localhost:8000/api/v1/product/deleteCategory/${key}`)
+
+      console.log(data);
+      setRealTime((prev)=>!prev)
+      
+      message.success("Category Deleted");
+      
+    } catch (error) {
+      console.error('Error during handleDelete from Category:', error);
+    }
   };
 
   const handleApprove = async (item) => {
-    
+    const newStatus = item.status === 'pending' ? 'approved' : 'pending';
     try {
       let data = await axios.post(`http://localhost:8000/api/v1/product/updateCategory/${item.key}?status=${item.status}`)
 
       console.log(data);
       setRealTime((prev)=>!prev)
-      if(realTime){
-        message.success('Category approved successfully');
-      }else{
-        message.success('Category Pending successfully');
-    }
+      
+      message.success(`Category ${newStatus === 'approved' ? 'approved' : 'pending'} successfully`);
       
     } catch (error) {
       console.error('Error during handleApprove from viewCategory:', error);
     }
-    // message.success('Category approved successfully');
+   
   
   };
 

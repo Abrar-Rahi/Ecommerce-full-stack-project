@@ -21,6 +21,8 @@ import ViewVarient from "./pages/ViewVarient";
 import AddDiscount from "./pages/AddDiscount";
 import Affiliate from "./pages/Affiliate";
 import ViewAffiliate from "./pages/ViewAffiliate";
+import ViewDiscount from "./pages/ViewDiscount";
+import OrderList from "./pages/OrderList";
 
 function App() {
 
@@ -43,8 +45,10 @@ function App() {
             <Route path="addVarient" element={<AddVarient />}></Route>
             <Route path="viewVarient" element={<ViewVarient />}></Route>
             <Route path="addDiscount" element={<AddDiscount />}></Route>
+            <Route path="viewDiscount" element={<ViewDiscount />}></Route>
             <Route path="affiliate" element={<Affiliate />}></Route>
             <Route path="affiliateBalance" element={<ViewAffiliate />}></Route>
+            <Route path="orderList" element={<OrderList />}></Route>
         </Route>
 
       </Route>

@@ -43,6 +43,7 @@ const paymentController = async (req, res) => {
     const payment = new PaymentSchema({
 
         "tran_id": tranId,
+        "amount": amount,
         "cus_name": cus_name,
         "cus_email": cus_email,
         "cus_phone": cus_phone,

@@ -63,7 +63,7 @@ const Affiliate = () => {
     const [allPro, setAllPro] = useState([]);
     const [activeProductId, setActiveProductId] = useState(null); // State to track which product's details are visible
     let userInfo = useSelector((state) => state.currentUser.value);
-console.log(userInfo);
+
     const { Meta } = Card;
 
     useEffect(() => {

@@ -1,5 +1,6 @@
 'use client';
 
+import ApplyCupon from '@/components/applyCupon';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
@@ -9,6 +10,8 @@ const Cart = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  let [cuponApply, setCuponApply] = useState("")
+  let [cuponContent, setCuponContent] = useState("")
 
   useEffect(() => {
     async function getData() {
@@ -73,13 +76,42 @@ const Cart = () => {
   });
 
   const tax = Math.round(totalPrice * 0.15);
-  const deliveryCharge = (totalPrice > 1000 ? 0 : 10)
+  
+  const deliveryCharge = (cuponContent.cuponType === "freeDelivary"? 0 : 100)
 
-  const subTotal = Math.round(totalPrice + tax + deliveryCharge);
+  const subTotal = Math.round(
+    cuponContent.cuponType === "cash"?
+    (totalPrice - cuponContent.cuponAmount) + tax + deliveryCharge
+    :
+    cuponContent.cuponType === "percent" ?
+    ((totalPrice*cuponContent.cuponAmount)/100) + tax + deliveryCharge
+    :
+    totalPrice + tax + deliveryCharge
+    );
   
   localStorage.setItem("cartlength",JSON.stringify(data.length))
 
   localStorage.setItem("totalPrice",JSON.stringify(subTotal))
+
+  let handleCupon = () => {
+
+    (async () => {
+        const rawResponse = await fetch('http://localhost:8000/api/v1/product/matchCupon', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ccupon : cuponApply})
+        });
+        const content = await rawResponse.json();
+        setCuponContent(content)
+      })();
+
+      setCuponApply("")
+      
+    }
+    
   
 
   return (
@@ -206,8 +238,17 @@ const Cart = () => {
             </tbody>
           </Table>
 
+          
+
           <Row className="justify-content-center">
             <Col md={6}>
+            <Row >
+
+            <Col>
+              <ApplyCupon cuponApply={cuponApply} setCuponApply={setCuponApply} handleCupon={handleCupon}/>
+            </Col>
+          </Row>
+
               <Card style={{ marginTop: '20px', border: 'none', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
                 <Card.Body>
                   <Card.Title style={{ textAlign: 'center', fontWeight: 'bold', fontSize: '1.5rem', marginBottom: '20px' }}>Order Summary</Card.Title>
@@ -264,12 +305,7 @@ const Cart = () => {
 
 
 
-          {/* <Row >
-            <Col>
-              <ApplyCupon />
-            </Col>
-            <Col></Col>
-          </Row> */}
+          
         </>
       )}
     </Container>

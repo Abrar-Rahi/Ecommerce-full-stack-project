@@ -5,58 +5,36 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
 
-const ApplyCupon = () => {
+const ApplyCupon = ({cuponApply,setCuponApply,handleCupon}) => {
 
-    let [cuponApply, setCuponApply] = useState("")
-    // let [cuponContent, setCuponContent] = useState("")
+   
 
     let handleCuponChange = (e) => {
         setCuponApply(e.target.value);
     }
 
-    let handleCupon = () => {
-        console.log(cuponApply);
-
-        (async () => {
-            const rawResponse = await fetch('http://localhost:8000/api/v1/product/matchCupon', {
-              method: 'POST',
-              headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({ccupon : cuponApply})
-            });
-            const content = await rawResponse.json();
-          
-            console.log(content);
-          })();
-
-        // fetch("http://localhost:8000/api/v1/product/matchCupon", {
-        //   method: "post",
-        //   headers: {
-        //     'Accept': 'application/json',
-        //     'Content-Type': 'application/json'
-        //   },
-
-        //   //make sure to serialize your JSON body
-        //   body: JSON.stringify({
-        //     ccupon : cuponApply,
-        //   })
-        // })
-        //   .then((response) => {
-        //     console.log(response);
-        //   });
-    }
 
 
     return (
-        <InputGroup onChange={handleCuponChange} size="sm" className="mb-3">
-            <InputGroup.Text id="inputGroup-sizing-sm">Have a Cupon?</InputGroup.Text>
+        <InputGroup size="sm" className="m-3" style={{ maxWidth: '500px', margin: 'auto'}}>
+            <InputGroup.Text id="inputGroup-sizing-sm" style={{ backgroundColor: '#f0f0f0', fontWeight: '600' }}>
+                Have a Coupon?
+            </InputGroup.Text>
             <Form.Control
+                style={{ width: '60%' }}
                 aria-label="Small"
                 aria-describedby="inputGroup-sizing-sm"
+                placeholder="Enter coupon code"
+                value={cuponApply}
+                onChange={handleCuponChange}
             />
-            <Button onClick={handleCupon} variant="primary">Apply</Button>
+            <Button
+                onClick={handleCupon}
+                variant="primary"
+                style={{ fontWeight: '600', padding: '0 20px' }}
+            >
+                Apply
+            </Button>
         </InputGroup>
     )
 }

@@ -304,8 +304,7 @@ if(productData.length){
                       </tr>
                     ))
                   }
-                  { }
-                  { }
+                 
                 </tbody>
               </Table>
 
